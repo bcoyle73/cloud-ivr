@@ -1,0 +1,8 @@
+# Ignore project-specific files or directories
+node_modules/
+.wrangler/
+wrangler.toml
+
+# Ignore package-lock files (specific to npm and yarn)
+package-lock.json
+
