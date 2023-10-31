@@ -69,6 +69,7 @@ async function startIVR(ivr, previousState, env, CallSid) {
 		console.log(`${CallSid}:Transitioned to states: ${state.value}`);
 		const jsonState = JSON.stringify(state);
 		try {
+			// update or save the existing call state in the Cloudflare KV Session
 			await env.SESSIONS.put(CallSid, jsonState);
 		} catch (error) {
 			// Handle errors if the write operation fails
@@ -153,6 +154,7 @@ const ivr = createMachine({
 		const {Digits, CallSid} = jsonBody;
 				
 		console.log(CallSid + ": inbound webhook");
+		// Fetch the Cloudflare KV session state referenced by the unique Twilio CallSid for each phone call
 		const stateDefinition = await env.SESSIONS.get(CallSid);
 
 		const service = await startIVR(ivr, stateDefinition, env, CallSid);
